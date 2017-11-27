@@ -4,11 +4,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var mongoose = require("mongoose");
 var index = require('./routes/index');
 var users = require('./routes/users');
 
+require("dotenv").config();
+
 var app = express();
+
+const db = mongoose.connection;
+mongoose.connect(process.env.MONGO_URI);
+db.on("error", console.error.bind(console, "CONNECTION FAILIURE, GO HOME:"));
+db.once("open", function() {
+  console.log("Your db is good to go!!!!!");
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
